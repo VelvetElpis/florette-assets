@@ -56,8 +56,8 @@ h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--disp);font-weight:400;l
 .mark{display:inline-flex;align-items:stretch;text-decoration:none;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.34em;text-transform:uppercase}
 .mark b{background:var(--ink);color:var(--bg);padding:5px 8px 5px 10px;font-weight:700}
 .mark i{font-style:normal;color:var(--ink);padding:5px 10px 5px 6px;border:1px solid var(--ink);border-left:0}
-.navlinks{display:flex;gap:clamp(14px,2.6vw,34px);margin:0 auto}
-.navlinks a{font-family:var(--disp);font-size:1.05rem;letter-spacing:.06em;color:var(--muted)}
+.navlinks{display:flex;flex-wrap:nowrap;gap:clamp(10px,2vw,30px);margin:0 auto;min-width:0}
+.navlinks a{font-family:var(--disp);font-size:1.02rem;letter-spacing:.05em;color:var(--muted);white-space:nowrap}
 .navlinks a.on,.navlinks a:hover{color:var(--ink)}
 .mode{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:.56rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);background:transparent;border:0;cursor:pointer;padding:6px 0}
 .mode .sw{width:28px;height:14px;border-radius:999px;border:1px solid var(--line);position:relative}
@@ -76,6 +76,7 @@ h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--disp);font-weight:400;l
 .rail a:hover,.rail button:hover{color:var(--ink)}
 .rail.r a,.rail.r button{font-family:var(--sans);font-style:normal;font-size:.95rem}
 @media(max-width:1100px){.rail{display:none}}
+@media(max-width:1240px){.mode.key .lbl{display:none}}
 @media(max-width:900px){.navlinks{display:none}.burger{display:block;margin-left:auto}.mode .lbl{display:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes leaf{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -619,4 +620,19 @@ footer.ft small{display:block;margin-top:8px;font-family:var(--disp);font-style:
 .sheet .sigrow{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap}
 footer.ft .colo{display:block;margin-top:14px;font-family:var(--sans);font-size:.5rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--dim)}
 footer.ft .colo svg{width:12px;height:12px;vertical-align:-2px;margin:0 8px;color:var(--crim2)}
+/* the keeper's key */
+.mode.key .sw::after{background:var(--gold)}.mode.key[aria-pressed="true"] .sw::after{left:16px}
+html[data-key="on"] .mode.key{color:var(--gold)}
+.fsk-layer{position:fixed;inset:0;z-index:9000;pointer-events:none;font-family:var(--sans)}
+.fsk{position:fixed;outline:1px dashed rgba(212,175,55,.8);outline-offset:2px}
+.fsk span{position:absolute;left:-1px;top:-9px;padding:2px 7px;font-size:.52rem;font-weight:700;letter-spacing:.06em;line-height:1.4;border-radius:2px;white-space:normal;overflow:hidden;text-overflow:ellipsis;max-height:4.4em;background:#D4AF37;color:#1a0f20;box-shadow:0 2px 8px -3px #000}
+.fsk.txt{outline-color:rgba(245,239,230,.7)}.fsk.txt span{background:#F3EADA;color:#2A1A30}
+.fsk.css{outline-color:rgba(142,126,151,.85)}.fsk.css span{background:#8E7E97;color:#fff}
+.fsk.sec{outline:2px solid rgba(201,48,76,.9);outline-offset:-2px}.fsk.sec span{left:50%;top:-1px;transform:translateX(-50%);background:#C9304C;color:#fff;font-size:.58rem;padding:4px 12px;letter-spacing:.12em;white-space:nowrap;max-width:94vw;max-height:none}
+.fsk.emb{outline-color:rgba(201,48,76,.8)}.fsk.emb span{background:#9E1B32;color:#fff;top:2px;left:2px;white-space:nowrap;max-width:60vw}
+.fsk-legend{position:fixed;right:16px;bottom:16px;z-index:9001;pointer-events:auto;max-width:380px;background:var(--card);border:1px solid var(--gold);padding:12px 14px;font-size:.66rem;line-height:1.6;color:var(--muted);box-shadow:var(--shadow)}
+.fsk-legend b{color:var(--ink)}
+.fsk-legend .sw{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:6px}
+.fsk-legend button{float:right;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;margin-left:10px}
+:root[data-mode="sunlit"] .fsk.txt span{background:#2A1A30;color:#F3EADA}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}

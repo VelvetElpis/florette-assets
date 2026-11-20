@@ -147,6 +147,11 @@ const modeStore = createStore((() => {
 })());
 const toastStore = createStore('');
 const routeStore = createStore(null);
+const keyStore = createStore(false);
+const secKey = k => {
+  const i = PAGES.findIndex(p => p[3] === k);
+  return `sec:Carrd section · set its ID to “${k}” · embed 1${i + 1}-${k}.html → Embed · Code · Inline · <div class="fs-mount" data-page="${k}" data-href="#${k}"> · CSS ${PAGES[i][2]}`;
+};
 const useStore = st => React.useSyncExternalStore(st.sub, st.get);
 const Stars = ({
   n
@@ -297,10 +302,12 @@ function Chrome({
     };
   }, []);
   const [msg] = useToast();
+  const showKey = !inCarrd() || /fskey/.test(location.search + location.hash);
   return React.createElement(React.Fragment, null, React.createElement(Sprite, null), React.createElement("nav", {
     className: "nav",
     id: "fs-nav",
-    "aria-label": "Pages"
+    "aria-label": "Pages",
+    "data-fsk": "emb:Hidden embeds \xB7 01-head.html \u2192 Hidden\xB7Head \xB7 02-body-end.html \u2192 Hidden\xB7Body End \xB7 the bar needs no element \xB7 CSS #fs-nav"
   }, React.createElement("div", {
     className: "prog",
     id: "fs-progress",
@@ -318,7 +325,18 @@ function Chrome({
     key: p[0],
     href: hrefOf(p),
     className: 'ul' + (cur === p[2] ? ' on' : '')
-  }, p[1].replace('The ', '')))), React.createElement("button", {
+  }, p[1].replace('The ', '')))), showKey && React.createElement("button", {
+    className: "mode key",
+    id: "fs-key",
+    onClick: () => keyStore.set(v => !v),
+    "aria-pressed": useStore(keyStore),
+    title: "The Keeper\u2019s Key \u2014 show where every Carrd element and id goes"
+  }, React.createElement("span", {
+    className: "sw",
+    "aria-hidden": "true"
+  }), React.createElement("span", {
+    className: "lbl"
+  }, "keeper\u2019s key")), React.createElement("button", {
     className: "mode",
     id: "fs-mode",
     onClick: toggle,
@@ -352,7 +370,7 @@ function Chrome({
   }, React.createElement("span", null, "\u2767"), "Discord"))), msg && React.createElement("div", {
     className: "toast",
     role: "status"
-  }, msg), React.createElement("div", {
+  }, msg), React.createElement(KeyOverlay, null), React.createElement("div", {
     className: "rail l",
     id: "fs-rail-l",
     "aria-label": "Page index"
@@ -383,7 +401,10 @@ function Chrome({
   }, "\u263D"), React.createElement("button", {
     onClick: toggle,
     title: "Toggle the reading mode"
-  }, "\u25D0")));
+  }, "\u25D0"), showKey && React.createElement("button", {
+    onClick: () => keyStore.set(v => !v),
+    title: "The Keeper\u2019s Key"
+  }, "\u2756")));
 }
 function Foyer({
   hero,
@@ -395,7 +416,8 @@ function Foyer({
   const p = pageNo('#fs-foyer');
   return React.createElement("header", {
     className: "page foyer",
-    id: "fs-foyer"
+    id: "fs-foyer",
+    "data-fsk": secKey('foyer')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, p.r), " \xB7 The Foyer"),
     tr: 'page. ' + p.n,
@@ -408,6 +430,7 @@ function Foyer({
     className: "hero",
     id: "fs-hero",
     "aria-hidden": "true",
+    "data-fsk": "img:Image \xB7 ID fs-img-hero \xB7 the banner \xB7 caption Text fs-hero-caption",
     style: hero.img ? {
       '--img': `url('${hero.img}')`
     } : undefined
@@ -424,15 +447,18 @@ function Foyer({
   }, React.createElement("i", null, "Flor"), "ette")), React.createElement("div", {
     className: "sub"
   }, React.createElement("span", {
-    className: "tagl"
+    className: "tagl",
+    "data-fsk": "txt:Text \xB7 ID fs-hero-tagline"
   }, hero.tagline), React.createElement("div", {
     className: "chno"
   }, p.n)), React.createElement("div", {
     className: "lead"
   }, React.createElement("p", {
-    className: "body"
+    className: "body",
+    "data-fsk": "txt:Text \xB7 ID fs-hero-lead"
   }, React.createElement("b", null, hero.lead.split(':')[0], ":"), hero.lead.split(':').slice(1).join(':')), React.createElement("div", {
-    className: "ctas"
+    className: "ctas",
+    "data-fsk": "txt:Text \xB7 fs-hero-buttons-0-label \xB7 -1-label \xB7 -2-label (links: -href)"
   }, hero.buttons.map((b, i) => React.createElement("a", {
     key: b.href,
     className: 'btn' + (i === 0 ? ' fill' : ''),
@@ -444,7 +470,8 @@ function Foyer({
     rel: "noopener"
   }, "Discord \u2197")), React.createElement("div", {
     className: "shelf",
-    id: "fs-shelf"
+    id: "fs-shelf",
+    "data-fsk": "css:#fs-shelf \xB7 .fs-spine[data-key] \xB7 Text fs-directory-0-name / -desc \u2026 7"
   }, React.createElement("div", {
     className: "k micro gold"
   }, "The collection \xB7 ", directory.length, " tomes on the shelf"), React.createElement("div", {
@@ -471,7 +498,8 @@ function Foyer({
     className: "note"
   }, "take any volume down \u2014 each is one page of the house."))), React.createElement("div", {
     className: "meta",
-    id: "fs-meta"
+    id: "fs-meta",
+    "data-fsk": "txt:Text \xB7 fs-hero-meta-0-k / -v \u2026 fs-hero-meta-3-v"
   }, hero.meta.map(m => React.createElement("div", {
     key: m.k
   }, React.createElement("div", {
@@ -548,7 +576,8 @@ function Almanac({
   };
   return React.createElement("section", {
     className: "page alm",
-    id: "fs-almanac"
+    id: "fs-almanac",
+    "data-fsk": secKey('almanac')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, pn.r), " \xB7 The Gardener\u2019s Almanac"),
     tr: 'page. ' + pn.n,
@@ -589,7 +618,8 @@ function Almanac({
     onClick: () => setCat(c[0])
   }, c[1]))))), React.createElement("div", {
     className: "week",
-    id: "fs-rhythm"
+    id: "fs-rhythm",
+    "data-fsk": "css:#fs-rhythm \xB7 .fs-day[data-day] \xB7 the week\u2019s items: rhythm.items through the fs-data JSON"
   }, rhythm.days.map((d, i) => {
     const items = rhythm.items.filter(it => it.day === i && (cat === 'all' || it.cat === cat));
     return React.createElement("div", {
@@ -625,7 +655,8 @@ function Almanac({
       background: '#B48BD6'
     }
   }), "Creative & social"), React.createElement("span", null, "\u2600 Athenaeum \xB7 \u263D Solarium")), (cat === 'all' || cat === 'creative') && React.createElement("div", {
-    className: "daily"
+    className: "daily",
+    "data-fsk": "txt:Text \xB7 fs-rhythm-daily-desc (also -name \xB7 -time)"
   }, "\u270E ", React.createElement("b", null, rhythm.daily.name), " \u2014 ", rhythm.daily.time.toLowerCase(), ". ", rhythm.daily.desc)), traditions && traditions.length > 0 && React.createElement("div", {
     id: "fs-traditions"
   }, React.createElement(Flor, null), React.createElement("div", {
@@ -634,7 +665,8 @@ function Almanac({
       marginBottom: 8
     }
   }, "What stayed \xB7 traditions of the house"), React.createElement("div", {
-    className: "trad"
+    className: "trad",
+    "data-fsk": "txt:Text \xB7 fs-traditions-0-n / -p \u2026 3 \xB7 CSS .fs-tradition"
   }, traditions.map(t => React.createElement("div", {
     key: t.n,
     className: "fs-tradition"
@@ -668,6 +700,7 @@ function Almanac({
     "aria-selected": e && e.id === x.id,
     className: 'tile fs-event' + (e && e.id === x.id ? ' on' : ''),
     "data-id": x.id,
+    "data-fsk": 'img:Image · fs-img-event-' + x.id + ' · Text fs-events-' + x.id + '-blurb · .fs-event[data-id]',
     style: {
       '--ac': x.ac,
       ...(x.img ? {
@@ -688,7 +721,8 @@ function Almanac({
     onClick: () => slide(1)
   }, "\u203A")), e && React.createElement("div", {
     className: "unlock",
-    key: e.id
+    key: e.id,
+    "data-fsk": 'txt:Text · fs-events-' + e.id + '-story / -when / -where / -dress / -note · page banner: Image fs-img-banner-' + e.id
   }, React.createElement("div", null, React.createElement("div", {
     className: "u"
   }, Date.parse(e.start) > now ? next && next.id === e.id ? 'Unfolded · the next evening' : 'Unfolded · on the calendar' : 'Unfolded · held'), React.createElement("h4", null, e.t.split(' ').slice(0, -1).join(' '), " ", React.createElement("em", null, e.t.split(' ').slice(-1))), React.createElement("div", {
@@ -804,6 +838,7 @@ function Evening({
     className: "hero"
   }, React.createElement("div", {
     className: "img",
+    "data-fsk": 'img:Image · fs-img-banner-' + e.id + ' (else fs-img-event-' + e.id + ')',
     style: e.banner || e.img ? {
       '--img': `url('${e.banner || e.img}')`
     } : undefined,
@@ -851,7 +886,8 @@ function Evening({
   }, sk('The evening'), React.createElement("div", {
     className: "story"
   }, React.createElement("p", {
-    className: "dc"
+    className: "dc",
+    "data-fsk": 'txt:Text · fs-events-' + e.id + '-story'
   }, e.story || e.blurb), React.createElement("div", {
     className: "aside"
   }, React.createElement("div", {
@@ -890,7 +926,8 @@ function Evening({
     className: "sec",
     id: "fs-menu"
   }, sk('The evening’s menu', priceNote), menu.length ? React.createElement("div", {
-    className: "menu"
+    className: "menu",
+    "data-fsk": 'txt:Text · fs-events-' + e.id + '-menu-0-n / -d / -p … · new dishes through fs-data'
   }, menu.map((d, i) => React.createElement("div", {
     className: "dish",
     key: i
@@ -905,7 +942,8 @@ function Evening({
     className: "sec",
     id: "fs-giveaways"
   }, sk('Giveaways', gifts.length ? gifts.length + ' to win' : ''), gifts.length ? React.createElement("div", {
-    className: "gifts"
+    className: "gifts",
+    "data-fsk": 'txt:Text · fs-events-' + e.id + '-giveaways-0-name / -prize / -how'
   }, gifts.map((g, i) => React.createElement("div", {
     className: "gift",
     key: i
@@ -956,6 +994,99 @@ function Evening({
     href: "#fs-almanac",
     onClick: ev => goEvening(null, ev)
   }, "Back to the Almanac")))));
+}
+function KeyOverlay() {
+  const on = useStore(keyStore);
+  const [boxes, setBoxes] = useState([]);
+  useEffect(() => {
+    if (on) document.documentElement.setAttribute('data-key', 'on');else document.documentElement.removeAttribute('data-key');
+    if (!on) {
+      setBoxes([]);
+      return;
+    }
+    let raf = 0;
+    const calc = () => {
+      raf = 0;
+      const out = [];
+      document.querySelectorAll('[data-fsk]').forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.width < 2 || r.height < 2 || r.bottom < -60 || r.top > innerHeight + 60) return;
+        const lt = r.top < 72 && r.height > 120 ? Math.min(72 - r.top + 8, r.height - 40) : 0;
+        out.push({
+          k: el.getAttribute('data-fsk'),
+          t: r.top,
+          l: r.left,
+          w: r.width,
+          h: r.height,
+          lt
+        });
+      });
+      setBoxes(out);
+    };
+    const tick = () => {
+      if (!raf) raf = requestAnimationFrame(calc);
+    };
+    calc();
+    window.addEventListener('scroll', tick, true);
+    window.addEventListener('resize', tick);
+    const iv = setInterval(calc, 700);
+    return () => {
+      window.removeEventListener('scroll', tick, true);
+      window.removeEventListener('resize', tick);
+      clearInterval(iv);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [on]);
+  if (!on) return null;
+  return ReactDOM.createPortal(React.createElement("div", {
+    className: "fsk-layer",
+    "aria-hidden": "true"
+  }, boxes.map((b, i) => {
+    const m = /^(\w+):([\s\S]*)$/.exec(b.k) || [0, 'css', b.k];
+    return React.createElement("div", {
+      key: i,
+      className: 'fsk ' + m[1],
+      style: {
+        top: b.t,
+        left: b.l,
+        width: b.w,
+        height: b.h
+      }
+    }, React.createElement("span", {
+      style: m[1] === 'sec' ? {
+        top: b.lt - 1
+      } : {
+        top: b.lt - 9,
+        maxWidth: Math.max(120, b.w - 6)
+      }
+    }, m[2]));
+  }), React.createElement("div", {
+    className: "fsk-legend"
+  }, React.createElement("button", {
+    type: "button",
+    onClick: () => keyStore.set(false)
+  }, "close"), React.createElement("b", null, "The Keeper\u2019s Key"), " \xB7 what to add in Carrd, and where.", React.createElement("br", null), React.createElement("span", {
+    className: "sw",
+    style: {
+      background: '#D4AF37'
+    }
+  }), React.createElement("b", null, "Image"), " element \xB7 give it the ID shown", React.createElement("br", null), React.createElement("span", {
+    className: "sw",
+    style: {
+      background: '#F3EADA',
+      border: '1px solid #8E7E97'
+    }
+  }), React.createElement("b", null, "Text"), " element \xB7 its ID replaces that string", React.createElement("br", null), React.createElement("span", {
+    className: "sw",
+    style: {
+      background: '#C9304C'
+    }
+  }), React.createElement("b", null, "Section"), " \xB7 the Carrd section ID, its embed file and mount", React.createElement("br", null), React.createElement("span", {
+    className: "sw",
+    style: {
+      background: '#8E7E97'
+    }
+  }), "CSS hook only (ids and classes for custom CSS)", React.createElement("br", null), "Every string has an id: ", React.createElement("b", null, "fs-"), " + its path (full list in carrd/ids.md). Lists are edited through the fs-data JSON.")), document.body);
 }
 function Sprite() {
   const fern = [];
@@ -1080,7 +1211,8 @@ function Herbarium({
   const p = pageNo('#fs-herbarium');
   return React.createElement("section", {
     className: "page herb",
-    id: "fs-herbarium"
+    id: "fs-herbarium",
+    "data-fsk": secKey('herbarium')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, p.r), " \xB7 The Herbarium"),
     tr: 'page. ' + p.n,
@@ -1103,12 +1235,15 @@ function Herbarium({
     className: "wrap"
   }, React.createElement("div", {
     className: "head"
-  }, React.createElement("div", null, React.createElement("div", {
+  }, React.createElement("div", {
+    "data-fsk": "txt:Text \xB7 fs-story-script \xB7 fs-story-sub"
+  }, React.createElement("div", {
     className: "scr"
   }, story.script), React.createElement("h2", null, "The ", React.createElement("i", null, "Herbarium")), React.createElement("div", {
     className: "sub"
   }, story.sub)), React.createElement("div", {
-    className: "facts"
+    className: "facts",
+    "data-fsk": "txt:Text \xB7 fs-story-facts-0-k / -v \u2026 3"
   }, story.facts.map(f => React.createElement("div", {
     key: f.k
   }, React.createElement("div", {
@@ -1119,15 +1254,19 @@ function Herbarium({
     className: "sk"
   }, React.createElement("i", null, "I."), "Our story"), React.createElement("div", {
     className: "story2"
-  }, React.createElement("div", null, story.paras.map((t, i) => React.createElement("p", {
+  }, React.createElement("div", {
+    "data-fsk": "txt:Text \xB7 fs-story-paras-0 \u2026 fs-story-paras-5"
+  }, story.paras.map((t, i) => React.createElement("p", {
     key: i,
     className: i === 0 ? 'dc' : ''
   }, t))), React.createElement("div", null, React.createElement("div", {
-    className: "quote"
+    className: "quote",
+    "data-fsk": "txt:Text \xB7 fs-story-quote"
   }, React.createElement(Bot, {
     k: "rosette"
   }), "\u201C", story.quote, "\u201D"), React.createElement("div", {
-    className: "ages"
+    className: "ages",
+    "data-fsk": "txt:Text \xB7 fs-story-ages-0-n / -d \u2026 2"
   }, story.ages.map((a, i) => React.createElement("div", {
     className: "age",
     key: a.n
@@ -1141,7 +1280,8 @@ function Herbarium({
   }, homes.map(h => React.createElement("div", {
     className: "door fs-home",
     "data-key": h.key,
-    key: h.key
+    key: h.key,
+    "data-fsk": 'txt:Text · fs-homes-' + h.key + '-p / -hours / -d / -href · CSS .fs-home[data-key]'
   }, React.createElement(Ghost, {
     k: "sprig"
   }), React.createElement("div", {
@@ -1163,7 +1303,8 @@ function Herbarium({
     className: "begin",
     style: {
       marginTop: 18
-    }
+    },
+    "data-fsk": "txt:Text \xB7 fs-story-beginnings-0-p / -by \xB7 -1-p / -by"
   }, story.beginnings.map(b => React.createElement("div", {
     key: b.k
   }, React.createElement("div", {
@@ -1178,7 +1319,8 @@ function Herbarium({
   }, journey.map((s, i) => React.createElement("article", {
     className: "sheet2 fs-specimen",
     "data-n": s.n,
-    key: s.n
+    key: s.n,
+    "data-fsk": 'img:Image · fs-img-specimen-' + s.n + ' · Text fs-journey-' + s.n + '-t / -p / -where · .fs-specimen[data-n]'
   }, React.createElement("span", {
     className: "tape",
     "aria-hidden": "true"
@@ -1197,7 +1339,8 @@ function Herbarium({
   }, "Specimen ", s.n, " \xB7 ", s.when), React.createElement("b", null, s.t), React.createElement("p", null, s.p), React.createElement("div", {
     className: "cap"
   }, s.where)))), React.createElement("p", {
-    className: "note"
+    className: "note",
+    "data-fsk": "txt:Text \xB7 fs-story-specimensNote"
   }, story.specimensNote)));
 }
 const TIERS = [['all', 'Everyone'], ['leadership', 'Leadership'], ['staff', 'Staff'], ['fc', 'Members'], ['associate', 'Associates']];
@@ -1263,6 +1406,7 @@ function Profile({
     onClick: onClose
   }, "\u2715"), React.createElement("div", {
     className: "pic",
+    "data-fsk": 'img:Image · ID fs-img-roster-' + m.id,
     style: m.img ? {
       '--img': `url('${m.img}')`
     } : undefined
@@ -1298,7 +1442,8 @@ function Profile({
   }, "\u2726 flex"), m.tags.map(t => React.createElement("span", {
     key: t
   }, t)))), React.createElement("div", {
-    className: "chs"
+    className: "chs",
+    "data-fsk": 'txt:Text · fs-roster-' + m.id + '-intro (I) · -bio (II) · -hooks (IV) · -spec · -stn'
   }, React.createElement("div", null, React.createElement("div", {
     className: "ch"
   }, React.createElement("div", {
@@ -1351,7 +1496,8 @@ function Beds({
   const grouped = BEDS.map(b => [b, list.filter(m => bedOf(m) === b[0])]).filter(x => x[1].length);
   return React.createElement("section", {
     className: "page beds",
-    id: "fs-beds"
+    id: "fs-beds",
+    "data-fsk": secKey('beds')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, pn.r), " \xB7 The Garden Beds"),
     tr: 'page. ' + pn.n,
@@ -1378,6 +1524,7 @@ function Beds({
   }, React.createElement("figure", {
     className: "plate2",
     id: "fs-beds-plate",
+    "data-fsk": "img:Image \xB7 ID fs-img-beds \xB7 caption Text fs-beds-caption",
     style: beds.img ? {
       '--img': `url('${beds.img}')`
     } : undefined
@@ -1387,15 +1534,19 @@ function Beds({
   }, "F"), React.createElement("figcaption", {
     className: "cap"
   }, beds.caption)), React.createElement("div", null, React.createElement("div", {
-    className: "scr"
+    className: "scr",
+    "data-fsk": "txt:Text \xB7 fs-beds-script"
   }, beds.script), React.createElement("h2", null, "The ", React.createElement("i", null, "Garden"), " Beds"), React.createElement("p", {
-    className: "body"
+    className: "body",
+    "data-fsk": "txt:Text \xB7 fs-beds-lead"
   }, beds.lead), React.createElement("ul", {
-    className: "roles"
+    className: "roles",
+    "data-fsk": "txt:Text \xB7 fs-beds-roles-0-k / -v \u2026 7"
   }, beds.roles.map(r => React.createElement("li", {
     key: r.k
   }, React.createElement("b", null, r.k), " ", r.v))), React.createElement("p", {
-    className: "choose"
+    className: "choose",
+    "data-fsk": "txt:Text \xB7 fs-beds-choose"
   }, beds.choose))), React.createElement("div", {
     className: "ctrl"
   }, React.createElement("div", {
@@ -1435,6 +1586,7 @@ function Beds({
     key: m.id,
     className: "person fs-member",
     "data-id": m.id,
+    "data-fsk": 'img:Image · fs-img-roster-' + m.id + ' · Text fs-roster-' + m.id + '-intro / -bio / -hooks / -disc / -carrd · .fs-member[data-id]',
     onClick: () => setSel(m),
     "aria-label": 'Read ' + m.n + '’s dossier'
   }, m.img && React.createElement("span", {
@@ -1469,7 +1621,8 @@ function Door({
   const half = Math.ceil(a.clauses.length / 2);
   return React.createElement("section", {
     className: "page door",
-    id: "fs-door"
+    id: "fs-door",
+    "data-fsk": secKey('door')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, pn.r), " \xB7 By the Door"),
     tr: 'page. ' + pn.n,
@@ -1492,7 +1645,8 @@ function Door({
   }), React.createElement("div", {
     className: "wrap"
   }, React.createElement("div", {
-    className: "plateline"
+    className: "plateline",
+    "data-fsk": "css:.fs-article[data-n] \xB7 Text fs-rules-<numeral>-title / -sub / -lead \xB7 clauses fs-rules-<numeral>-clauses-<n>-text"
   }, React.createElement("div", {
     className: "orn",
     "aria-hidden": "true"
@@ -1538,7 +1692,8 @@ function Door({
   }, "next article \u203A"))), React.createElement("div", {
     className: "rated",
     id: "fs-brakes",
-    role: "note"
+    role: "note",
+    "data-fsk": "txt:Text \xB7 fs-brakes-k \xB7 -word \xB7 -p \xB7 fs-brakes-lines-0 \u2026 2 \xB7 CSS #fs-brakes"
   }, React.createElement("div", {
     className: "r",
     "aria-hidden": "true"
@@ -1588,7 +1743,8 @@ function Secrets({
   const glyphs = ['❀', '☽', '✦', '❧', '✺', '✧'];
   return React.createElement("section", {
     className: "page sec",
-    id: "fs-secrets"
+    id: "fs-secrets",
+    "data-fsk": secKey('secrets')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, pageNo('#fs-secrets').r), " \xB7 Open Secrets"),
     tr: 'page. ' + pageNo('#fs-secrets').n,
@@ -1625,6 +1781,7 @@ function Secrets({
     key: f.id
   }, React.createElement("div", {
     className: "tcard img",
+    "data-fsk": 'img:Image · fs-img-file-' + f.id + ' · CSS .fs-file[data-id]',
     style: f.img ? {
       '--img': `url('${f.img}')`
     } : undefined
@@ -1653,7 +1810,8 @@ function Secrets({
     className: "star",
     "aria-hidden": "true"
   }, "\u273A"))), React.createElement("div", {
-    className: "tcard txt"
+    className: "tcard txt",
+    "data-fsk": 'txt:Text · fs-ledger-' + f.id + '-name / -desig / -summary / -pull / -add · status -status'
   }, React.createElement("div", {
     className: "hd"
   }, React.createElement("span", null, "Florette"), React.createElement("b", null, f.no, "/", String(ledger.length).padStart(3, '0')), React.createElement("span", null, f.where)), React.createElement("div", {
@@ -1725,7 +1883,8 @@ function PartnerCard({
 }) {
   return React.createElement("article", {
     className: "ccard fs-partner",
-    "data-id": p.id
+    "data-id": p.id,
+    "data-fsk": 'img:Image · fs-img-partner-' + p.id + ' · Text fs-partners-items-' + p.id + '-blurb / -hours / -type / -where / -carrd / -discord · .fs-partner[data-id]'
   }, React.createElement(Bot, {
     k: "sprig",
     className: "sprig"
@@ -1773,7 +1932,8 @@ function Partners({
   const parts = who ? partners.become.p.split(who) : [partners.become.p];
   return React.createElement("section", {
     className: "page tray",
-    id: "fs-partners"
+    id: "fs-partners",
+    "data-fsk": secKey('partners')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, pn.r), " \xB7 The Hall Tray"),
     tr: 'page. ' + pn.n,
@@ -1800,12 +1960,14 @@ function Partners({
   }, React.createElement("div", null, React.createElement("div", {
     className: "eyebrow"
   }, partners.eyebrow), React.createElement("h2", null, "Partners ", React.createElement("i", null, "&"), React.createElement("br", null), "Affiliates"), React.createElement("p", {
-    className: "body"
+    className: "body",
+    "data-fsk": "txt:Text \xB7 fs-partners-lead (eyebrow: fs-partners-eyebrow)"
   }, partners.lead)), React.createElement("div", null, React.createElement("p", {
     className: "rule",
     style: {
       margin: 0
-    }
+    },
+    "data-fsk": "txt:Text \xB7 fs-partners-rule-0-k / -v \u2026 2"
   }, partners.rule.map((r, i) => React.createElement("span", {
     key: i
   }, React.createElement("b", null, r.k), " ", r.v, " "))), React.createElement("div", {
@@ -1824,7 +1986,8 @@ function Partners({
     key: p.id
   }))), React.createElement("div", {
     className: "become",
-    id: "fs-become"
+    id: "fs-become",
+    "data-fsk": "txt:Text \xB7 fs-partners-become-k / -p / -who \xB7 CSS #fs-become"
   }, React.createElement("div", null, React.createElement("div", {
     className: "k"
   }, partners.become.k), React.createElement("p", null, parts[0], who && React.createElement("b", null, who), parts[1])), React.createElement("a", {
@@ -1846,7 +2009,8 @@ function Letter({
   const hi = new Set(tab.contacts);
   return React.createElement("section", {
     className: "page let",
-    id: "fs-letter"
+    id: "fs-letter",
+    "data-fsk": secKey('letter')
   }, React.createElement(Marg, {
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, pn.r), " \xB7 The Letter on the Desk"),
     tr: 'page. ' + pn.n,
@@ -1885,10 +2049,16 @@ function Letter({
   }, "A. Laon, keeper."), React.createElement("span", {
     className: "corner tr"
   }, "unfold whichever corner suits you"), React.createElement("div", {
-    className: "to"
-  }, letter.to), React.createElement("p", null, letter.open), React.createElement("p", null, letter.pen), React.createElement("div", {
+    className: "to",
+    "data-fsk": "txt:Text \xB7 fs-letter-to"
+  }, letter.to), React.createElement("p", {
+    "data-fsk": "txt:Text \xB7 fs-letter-open"
+  }, letter.open), React.createElement("p", {
+    "data-fsk": "txt:Text \xB7 fs-letter-pen"
+  }, letter.pen), React.createElement("div", {
     className: "folds",
-    role: "tablist"
+    role: "tablist",
+    "data-fsk": "css:.fs-tab[data-key] \xB7 Text fs-letter-tabs-visitor-headline / -body / -perks-0 / -expect-0 / -cta (also member \xB7 associate \xB7 staff)"
   }, letter.tabs.map(t => React.createElement("button", {
     key: t.key,
     role: "tab",
@@ -1912,7 +2082,8 @@ function Letter({
   }, p)))))), React.createElement("div", {
     className: "sigrow"
   }, React.createElement("div", {
-    className: "sig"
+    className: "sig",
+    "data-fsk": "txt:Text \xB7 fs-letter-sign"
   }, letter.sign.replace('— ', '')), React.createElement("span", {
     className: "wax",
     title: "sealed by the house",
@@ -1920,7 +2091,8 @@ function Letter({
   }, React.createElement(Bot, {
     k: "rosette"
   }))), React.createElement("div", {
-    className: "ps"
+    className: "ps",
+    "data-fsk": "txt:Text \xB7 fs-letter-ps"
   }, letter.ps), React.createElement("a", {
     className: "btn",
     href: site.discord,
@@ -1936,7 +2108,8 @@ function Letter({
   }, React.createElement("div", {
     className: "k micro"
   }, "who holds the pen"), React.createElement("div", {
-    className: "list"
+    className: "list",
+    "data-fsk": "txt:Text \xB7 fs-letter-contacts-aurore-d (-n \xB7 -r) \xB7 saya \xB7 morgan \xB7 leiha \xB7 smaug \xB7 rita \xB7 CSS .fs-contact[data-key]"
   }, letter.contacts.map(c => React.createElement("div", {
     key: c.key,
     className: 'pen fs-contact' + (hi.size ? hi.has(c.key) ? ' hi' : ' off' : ''),
@@ -2023,7 +2196,8 @@ const Foot = ({
   footer
 }) => React.createElement("footer", {
   className: "ft",
-  id: "fs-foot"
+  id: "fs-foot",
+  "data-fsk": "txt:Text \xB7 fs-footer-line \xB7 fs-footer-small \xB7 fs-footer-colophon \xB7 CSS #fs-foot"
 }, React.createElement("div", {
   className: "wrap"
 }, React.createElement("div", {
