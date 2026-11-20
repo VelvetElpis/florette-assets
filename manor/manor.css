@@ -50,7 +50,7 @@ h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--disp);font-weight:400;l
 .dots3{display:flex;gap:8px}.dots3 i{width:8px;height:8px;border-radius:50%;background:var(--dim);opacity:.6}.dots3 i.on{opacity:1;background:var(--ink)}
 
 /* rails + nav (chrome shared by every page) */
-.fs-navroot{position:sticky;top:0;z-index:30}
+.fs-navroot{position:sticky;top:0;z-index:30;width:100%;align-self:stretch;flex:0 0 auto}
 .nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .nav .wrap{display:flex;align-items:center;gap:18px;min-height:64px}
 .mark{display:inline-flex;align-items:stretch;text-decoration:none;font-family:var(--sans);font-size:.62rem;font-weight:700;letter-spacing:.34em;text-transform:uppercase}
@@ -635,4 +635,89 @@ html[data-key="on"] .mode.key{color:var(--gold)}
 .fsk-legend .sw{display:inline-block;width:10px;height:10px;border-radius:2px;vertical-align:-1px;margin-right:6px}
 .fsk-legend button{float:right;background:transparent;border:1px solid var(--line);color:var(--ink);cursor:pointer;font-size:.56rem;letter-spacing:.14em;text-transform:uppercase;padding:3px 8px;margin-left:10px}
 :root[data-mode="sunlit"] .fsk.txt span{background:#2A1A30;color:#F3EADA}
+/* ═══════════ the regal pass — a manor dressed for company: velvet ground, gilt rules, framed plates, a quieter scale ═══════════ */
+:root{--bg:#120A18;--bg2:#1A0F21;--card:#1E1127;--card2:#28162F;--rule:rgba(212,175,55,.62);--line:rgba(212,175,55,.34);--line2:rgba(212,175,55,.14);--ghost:rgba(245,239,230,.035)}
+:root[data-mode="sunlit"]{--rule:rgba(166,124,30,.62);--ghost:rgba(31,18,38,.045)}
+body{background:radial-gradient(120% 70% at 50% -10%,#241332 0%,var(--bg) 58%) fixed,var(--bg)}
+:root[data-mode="sunlit"] body{background:radial-gradient(120% 70% at 50% -10%,#FFFCF4 0%,var(--bg) 58%) fixed,var(--bg)}
+/* damask lattice, laid over the grain */
+.grain{opacity:.16;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'><g fill='none' stroke='white' stroke-opacity='.55' stroke-width='.8'><path d='M70 6 L134 70 L70 134 L6 70 Z'/><path d='M70 26 L114 70 L70 114 L26 70 Z'/><circle cx='70' cy='70' r='7'/><circle cx='70' cy='70' r='2'/><path d='M70 0 L70 12 M70 128 L70 140 M0 70 L12 70 M128 70 L140 70'/></g></svg>");background-size:220px 220px,140px 140px}
+/* chrome: a serif wordmark, airier bar, small-caps links */
+.nav .wrap{min-height:76px;gap:26px}
+.mark{font-family:var(--disp);font-size:1.25rem;font-weight:400;letter-spacing:.2em;text-transform:uppercase;align-items:baseline;gap:.35em}
+.mark b{background:transparent;color:var(--gold);padding:0;font-weight:400}
+.mark i{border:0;padding:0;color:var(--ink)}
+.mark::before{content:"❦";font-size:.9em;color:var(--crim2);margin-right:.5em}
+.navlinks{gap:clamp(12px,2.2vw,34px)}
+.navlinks a{font-family:var(--sans);font-size:.56rem;font-weight:600;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
+.navlinks a.on,.navlinks a:hover{color:var(--gold2)}
+.ul::after{background:var(--gold)}
+.nav{border-bottom:1px solid var(--line2)}
+.prog{bottom:-1px}
+.rail a.on{color:var(--gold2)}.rail a.on::before{background:var(--gold)}
+.rail::before,.rail::after{background:var(--line)}
+/* pages: gilt devices, no ghost numerals, flourished corners, a centred plaque */
+.pgnum{display:none}
+.vrule::before,.vrule::after,.hrule::after{background:var(--gold)}
+.ring{border-color:var(--line)}
+.marg{color:var(--gold);letter-spacing:.34em;font-size:.52rem}
+.marg b{color:var(--ink)}
+.flourish{position:absolute;z-index:3;width:54px;height:54px;color:var(--line);pointer-events:none}
+.flourish.tl{left:calc(var(--gut) - 6px);top:40px}.flourish.tr{right:calc(var(--gutr) - 6px);top:40px;transform:scaleX(-1)}
+.flourish.bl{left:calc(var(--gut) - 6px);bottom:38px;transform:scaleY(-1)}.flourish.br{right:calc(var(--gutr) - 6px);bottom:38px;transform:scale(-1)}
+.flourish .bot{stroke-width:1}
+@media(max-width:900px){.flourish{width:36px;height:36px}.flourish.bl,.flourish.br{display:none}}
+.tome{top:44px;left:50%;transform:translateX(-50%);gap:12px;padding:0;border:0;background:transparent;color:var(--gold)}
+.tome .med{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--gold);box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px var(--line);font-family:var(--disp);font-size:.95rem;font-style:italic;color:var(--gold2);letter-spacing:0}
+.tome .ln{display:inline-block;width:46px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}.tome .ln.r{background:linear-gradient(90deg,var(--gold),transparent)}
+.tome i{color:var(--gold2)}.tome em{color:var(--muted)}
+.tome svg{display:none}
+@media(max-width:900px){.tome{top:40px}.tome .ln{width:22px}.tome i{display:none}}
+.title{font-size:clamp(3rem,9.5vw,8rem);letter-spacing:-.01em;font-weight:300}
+.title .sm{font-size:.4em;letter-spacing:.06em}
+.eyebrow,.micro.gold,.beds .ctrl .badges button,.alm .legend{letter-spacing:.36em}
+/* buttons and frames: gilt double borders, squared corners */
+.btn{border:1px solid var(--line);box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px var(--line2);padding:14px 22px;letter-spacing:.3em;color:var(--ink);background:color-mix(in srgb,var(--card) 60%,transparent)}
+.btn:hover{border-color:var(--gold);color:var(--gold2);box-shadow:inset 0 0 0 3px var(--bg),inset 0 0 0 4px var(--line)}
+.btn.fill{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a0f20;border-color:var(--gold2);box-shadow:inset 0 0 0 3px color-mix(in srgb,var(--gold) 70%,#000 0%),inset 0 0 0 4px rgba(255,255,255,.35)}
+.btn.fill:hover{background:linear-gradient(180deg,#f3e2a0,var(--gold2));color:#1a0f20;border-color:var(--gold2)}
+.btn.sm{padding:10px 14px}
+.unlock{border-radius:3px;border:1px solid var(--line);box-shadow:inset 0 0 0 5px var(--bg),inset 0 0 0 6px var(--line2),var(--shadow);padding:clamp(28px,4.4vw,46px)}
+.unlock .side .img{border-radius:2px;outline:1px solid var(--line);outline-offset:5px}
+.unlock .next{right:30px;bottom:-34px;color:var(--gold)}
+.tile{border-color:var(--line);box-shadow:inset 0 0 0 1px var(--bg)}
+.tile.on{outline-color:var(--gold2)}
+.sheet{border:1px solid var(--line);box-shadow:inset 0 0 0 5px var(--bg),inset 0 0 0 6px var(--line2);padding:clamp(28px,4.4vw,44px)}
+.sheet .corner.tl,.sheet .corner.tr{color:var(--gold)}
+.doss{border:1px solid var(--line);box-shadow:inset 0 0 0 0 transparent,var(--shadow)}
+.doss::before{width:100%;height:1px;background:linear-gradient(90deg,var(--gold),transparent 60%)}
+.doss .bd{box-shadow:inset 1px 0 0 var(--line2)}
+.doss .ch .cn i,.eve .sk i,.herb .sk i,.herb .age i,.ccard .no{color:var(--gold2)}
+.ccard .seal{border-color:var(--gold)}.ccard .seal.n{border-color:var(--crim2)}
+.ccard{box-shadow:none}
+.eve .gift,.herb .door{border-color:var(--line);box-shadow:inset 0 0 0 5px var(--bg),inset 0 0 0 6px var(--line2)}
+.eve .gift::before,.herb .door::before{display:none}
+.eve .gift .seal{border-color:var(--gold);color:var(--gold2)}
+.beds .plate2{outline:1px solid var(--line);outline-offset:6px;border-color:var(--line)}
+.beds .plate2::before{display:none}
+.herb .sheet2{box-shadow:0 1px 0 rgba(255,255,255,.3) inset,var(--shadow)}
+.tarot .tcard{border-color:var(--line)}
+.book{outline:0}
+/* hairlines and keys in gilt */
+.beds .ctrl,.cards,.eve .menu,.herb .ages,.pens .list,.week{border-color:var(--line)}
+.bed .bh::after,.eve .sk::after,.herb .sk::after,.doss .ch .cn::after{background:var(--line)}
+.flor i{background:var(--line)}.flor svg{color:var(--gold)}
+.foyer .hero .cap,.marg2{color:var(--gold)}
+.marg2 .circ{border-color:var(--gold);color:var(--gold2)}
+.let h2 .scr,.beds .scr,.herb .head .scr,.herb .quote::before{color:var(--gold2)}
+.let h2 .ul2{border-color:var(--gold)}
+.let .credit::after{background:var(--gold)}
+.soi .notif h3 .strike::after{background:var(--gold)}
+.soi .notif h3{letter-spacing:.3em;font-weight:600}
+.alm .head h2 .strike::after{background:var(--gold)}
+.sheet .wax{box-shadow:0 8px 16px -10px #000,inset 0 0 0 3px rgba(255,255,255,.12),0 0 0 3px var(--bg),0 0 0 4px var(--line)}
+footer.ft{border-top:1px solid var(--line);background:linear-gradient(180deg,transparent,color-mix(in srgb,var(--card) 60%,transparent))}
+footer.ft .word{color:var(--gold2);letter-spacing:.42em}
+.foyer .ctas .btn{padding:12px 16px;letter-spacing:.26em}
+.foyer .lead .body{max-width:44ch}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}

@@ -164,7 +164,11 @@ const Marg = ({
   tr,
   bl,
   br
-}) => React.createElement(React.Fragment, null, tl && React.createElement("div", {
+}) => React.createElement(React.Fragment, null, ['tl', 'tr', 'bl', 'br'].map(c => React.createElement(Bot, {
+  key: c,
+  k: "corner",
+  className: 'flourish ' + c
+})), tl && React.createElement("div", {
   className: "marg tl"
 }, tl), tr && React.createElement("div", {
   className: "marg tr"
@@ -409,9 +413,7 @@ function Chrome({
 function Foyer({
   hero,
   site,
-  directory,
-  tomes,
-  cur
+  tomes
 }) {
   const p = pageNo('#fs-foyer');
   return React.createElement("header", {
@@ -468,35 +470,7 @@ function Foyer({
     href: site.discord,
     target: "_blank",
     rel: "noopener"
-  }, "Discord \u2197")), React.createElement("div", {
-    className: "shelf",
-    id: "fs-shelf",
-    "data-fsk": "css:#fs-shelf \xB7 .fs-spine[data-key] \xB7 Text fs-directory-0-name / -desc \u2026 7"
-  }, React.createElement("div", {
-    className: "k micro gold"
-  }, "The collection \xB7 ", directory.length, " tomes on the shelf"), React.createElement("div", {
-    className: "row"
-  }, directory.map((d, i) => {
-    const pg = PAGES.find(x => x[2] === d.href) || PAGES[i];
-    return React.createElement("a", {
-      key: d.href,
-      className: 'spine fs-spine' + (cur === d.href ? ' on' : ''),
-      "data-key": d.key,
-      href: pg ? hrefOf(pg) : d.href,
-      title: d.desc,
-      style: {
-        '--tc': d.color
-      }
-    }, React.createElement("span", {
-      className: "n"
-    }, d.n), React.createElement("span", {
-      className: "t"
-    }, d.name), React.createElement(Bot, {
-      k: "rosette"
-    }));
-  })), React.createElement("div", {
-    className: "note"
-  }, "take any volume down \u2014 each is one page of the house."))), React.createElement("div", {
+  }, "Discord \u2197"))), React.createElement("div", {
     className: "meta",
     id: "fs-meta",
     "data-fsk": "txt:Text \xB7 fs-hero-meta-0-k / -v \u2026 fs-hero-meta-3-v"
@@ -1146,6 +1120,23 @@ function Sprite() {
     cy: "50",
     r: "7"
   }))), React.createElement("symbol", {
+    id: "fs-corner",
+    viewBox: "0 0 100 100"
+  }, React.createElement("g", {
+    className: "bot"
+  }, React.createElement("path", {
+    d: "M4 96 L4 24 Q4 4 24 4 L96 4"
+  }), React.createElement("path", {
+    d: "M12 96 L12 30 Q12 12 30 12 L96 12"
+  }), React.createElement("path", {
+    d: "M20 28 q 8 -10 18 -2 q 6 6 -2 12 q -6 4 -8 -2"
+  }), React.createElement("circle", {
+    cx: "24",
+    cy: "24",
+    r: "2.2"
+  }), React.createElement("path", {
+    d: "M4 60 q 10 -4 18 4 M60 4 q -4 10 4 18"
+  }))), React.createElement("symbol", {
     id: "fs-fern",
     viewBox: "0 0 100 200"
   }, React.createElement("g", {
@@ -1198,9 +1189,13 @@ function Tome({
   return React.createElement("div", {
     className: "tome",
     "aria-hidden": "true"
-  }, React.createElement(Bot, {
-    k: "rosette"
-  }), "Tome ", p.r, t.bot && React.createElement("i", null, t.bot), t.note && React.createElement("em", null, "\xB7 ", t.note));
+  }, React.createElement("span", {
+    className: "ln"
+  }), React.createElement("span", {
+    className: "med"
+  }, p.r), React.createElement("span", {
+    className: "ln r"
+  }), t.bot && React.createElement("i", null, t.bot), t.note && React.createElement("em", null, "\xB7 ", t.note));
 }
 function Herbarium({
   story,
