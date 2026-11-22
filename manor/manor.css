@@ -831,4 +831,16 @@ footer.ft .word{color:var(--rose);font-family:var(--sc);letter-spacing:.3em}foot
 /* the dossier’s links sit at the foot of the file; event pictures are landscape */
 .doss .bd{display:flex;flex-direction:column}.doss .chs{flex:0 0 auto}.doss .ext{margin-top:auto;padding-top:14px}.doss .ext::before{content:"";display:block;height:14px}
 .unlock .side .img{aspect-ratio:16/9;margin:0 0 6px}
+/* the soirée panel: a wide 16:9 preview on top, the particulars at the foot */
+.unlock{display:block;padding:0 0 clamp(22px,4vw,40px)}
+.unlock .pic{aspect-ratio:16/9;max-height:min(72vh,660px);margin:10px auto 0;max-width:calc(100% - 20px);background:var(--img,radial-gradient(90% 80% at 40% 20%,color-mix(in srgb,var(--ac,var(--rose)) 36%,var(--card)),var(--bg))) center/cover no-repeat;border:1px solid var(--frame);box-shadow:0 0 0 7px var(--mat),0 0 0 8px var(--frame);filter:saturate(.92) sepia(.06)}
+.unlock>.u,.unlock>h4,.unlock>.q,.unlock>.about,.unlock>.cols,.unlock>.am,.unlock>.meta2,.unlock>.go{margin-left:clamp(22px,4vw,40px);margin-right:clamp(22px,4vw,40px)}
+.unlock>.u{margin-top:clamp(26px,4vw,40px)}
+.unlock .about p{max-width:72ch}
+.unlock .cols{max-width:960px}
+.unlock .meta2{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 28px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.unlock .meta2 div{display:block;border:0;padding:0;font-size:1rem;font-family:var(--serif);color:var(--ink)}
+.unlock .meta2 .k{display:block;margin-bottom:4px;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--lav)}
+.unlock .go{margin-top:20px;display:flex;align-items:center;gap:10px 22px;flex-wrap:wrap}
+@media(max-width:860px){.unlock .meta2{grid-template-columns:1fr 1fr}.unlock .pic{margin:8px 8px 0}}@media(max-width:520px){.unlock .meta2{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}

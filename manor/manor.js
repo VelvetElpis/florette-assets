@@ -697,7 +697,16 @@ function Almanac({
     className: "unlock",
     key: e.id,
     "data-fsk": 'txt:Text · fs-events-' + e.id + '-story / -when / -where / -dress / -note · page banner: Image fs-img-banner-' + e.id
-  }, React.createElement("div", null, React.createElement("div", {
+  }, React.createElement("div", {
+    className: "pic",
+    style: e.img ? {
+      '--img': `url('${e.img}')`,
+      '--ac': e.ac
+    } : {
+      '--ac': e.ac
+    },
+    "data-fsk": 'img:Image · fs-img-event-' + e.id + ' · a 16:9 preview'
+  }), React.createElement("div", {
     className: "u"
   }, Date.parse(e.start) > now ? next && next.id === e.id ? 'Unfolded · the next evening' : 'Unfolded · on the calendar' : 'Unfolded · held'), React.createElement("h4", null, e.t.split(' ').slice(0, -1).join(' '), " ", React.createElement("em", null, e.t.split(' ').slice(-1))), React.createElement("div", {
     className: "q"
@@ -719,17 +728,7 @@ function Almanac({
     className: "am"
   }, e.amusements.map((a, i) => React.createElement("div", {
     key: i
-  }, React.createElement("b", null, a.name), React.createElement("i", null, a.host), React.createElement("p", null, a.text))))), React.createElement("div", {
-    className: "side"
-  }, React.createElement("div", {
-    className: "img",
-    style: e.img ? {
-      '--img': `url('${e.img}')`,
-      '--ac': e.ac
-    } : {
-      '--ac': e.ac
-    }
-  }), React.createElement("div", {
+  }, React.createElement("b", null, a.name), React.createElement("i", null, a.host), React.createElement("p", null, a.text)))), React.createElement("div", {
     className: "meta2"
   }, React.createElement("div", null, React.createElement("span", {
     className: "k"
@@ -752,7 +751,7 @@ function Almanac({
     onClick: ev => goEvening(e.id, ev)
   }, "Read the full evening \u2192"), React.createElement("span", {
     className: "hint"
-  }, e.url ? 'this evening keeps its own pages' : 'the story · amusements · menu · giveaways · company'))), React.createElement("button", {
+  }, e.url ? 'this evening keeps its own pages' : 'the story · amusements · menu · giveaways')), React.createElement("button", {
     className: "next",
     onClick: () => setSel(sorted[(idx + 1) % sorted.length].id)
   }, "Next evening \u203A")))));
