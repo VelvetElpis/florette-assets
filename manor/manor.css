@@ -196,7 +196,7 @@ h1,h2,h3,h4{margin:0;text-wrap:balance;font-family:var(--disp);font-weight:400;l
 .unlock .am div{border-top:1px solid var(--line2);padding-top:8px}
 .unlock .am b{font-family:var(--disp);font-weight:400;font-size:1.05rem;display:block}.unlock .am i{font-style:normal;font-family:var(--sans);font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;color:var(--crim2)}.unlock .am p{margin:3px 0 0;font-size:.82rem;color:var(--muted)}
 .unlock .side{position:relative}
-.unlock .side .img{aspect-ratio:3/4;background:var(--img,radial-gradient(90% 80% at 40% 20%,color-mix(in srgb,var(--ac,var(--gold)) 40%,var(--card)),var(--bg)));background-size:cover;background-position:center;border-radius:4px 4px 30px 4px;filter:saturate(.8)}
+.unlock .side .img{aspect-ratio:16/9;background:var(--img,radial-gradient(90% 80% at 40% 20%,color-mix(in srgb,var(--ac,var(--gold)) 40%,var(--card)),var(--bg)));background-size:cover;background-position:center;border-radius:4px 4px 30px 4px;filter:saturate(.8)}
 .unlock .side .meta2{margin-top:14px;display:grid;gap:8px}
 .unlock .side .meta2 div{display:grid;grid-template-columns:70px 1fr;gap:10px;font-size:.84rem;border-bottom:1px dotted var(--line2);padding-bottom:6px}
 .unlock .side .meta2 .k{font-family:var(--sans);font-size:.52rem;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);padding-top:3px}
@@ -828,4 +828,7 @@ footer.ft .word{color:var(--rose);font-family:var(--sc);letter-spacing:.3em}foot
 /* keeper's key and scrollbar take the new accents */
 .fsk{outline-color:rgba(217,163,174,.8)}.fsk span{background:var(--rose2);color:#fff}.fsk.txt span{background:#F2EDE2;color:#22140A}.fsk.sec{outline-color:var(--lav)}.fsk.sec span{background:var(--lav)}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,var(--lav),var(--rose2))}
+/* the dossier’s links sit at the foot of the file; event pictures are landscape */
+.doss .bd{display:flex;flex-direction:column}.doss .chs{flex:0 0 auto}.doss .ext{margin-top:auto;padding-top:14px}.doss .ext::before{content:"";display:block;height:14px}
+.unlock .side .img{aspect-ratio:16/9;margin:0 0 6px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}

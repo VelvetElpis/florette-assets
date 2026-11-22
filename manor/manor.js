@@ -655,7 +655,7 @@ function Almanac({
     className: "micro"
   }, "Notification"), React.createElement("h3", null, "New evening ", React.createElement("span", {
     className: "strike"
-  }, "unfolded")), React.createElement("p", null, "Congratulations, you have found the seasonal soir\xE9es. Choose an evening to learn more about it.")), React.createElement("div", {
+  }, "unfolded")), React.createElement("p", null, "The house dresses for the last Saturday of each month, each evening with a theme of its own. Choose one to learn more.")), React.createElement("div", {
     className: "tilesw",
     id: "fs-soiree-strip"
   }, React.createElement("button", {
@@ -821,9 +821,6 @@ function Evening({
     tl: React.createElement(React.Fragment, null, "Tome ", React.createElement("b", null, pageNo('#fs-almanac').r), " \xB7 an evening, unfolded"),
     tr: React.createElement(React.Fragment, null, "the almanac \xB7 ", React.createElement("b", null, e.id))
   }), React.createElement("div", {
-    className: "ring",
-    "aria-hidden": "true"
-  }), React.createElement("div", {
     className: "wrap"
   }, React.createElement("a", {
     className: "back",
@@ -899,7 +896,7 @@ function Evening({
   }, ORBS[i % ORBS.length]), React.createElement("b", null, a.name), React.createElement("i", null, a.host), React.createElement("p", null, a.text))))), React.createElement("section", {
     className: "sec",
     id: "fs-menu"
-  }, sk('The evening’s menu', priceNote), menu.length ? React.createElement("div", {
+  }, sk('The evening’s menu', e.menuNote || priceNote), menu.length ? React.createElement("div", {
     className: "menu",
     "data-fsk": 'txt:Text · fs-events-' + e.id + '-menu-0-n / -d / -p … · new dishes through fs-data'
   }, menu.map((d, i) => React.createElement("div", {
@@ -929,10 +926,10 @@ function Evening({
     className: "prize"
   }, g.prize), React.createElement("p", null, g.how)))) : React.createElement("p", {
     className: "none"
-  }, "No giveaways have been written for this evening yet.")), React.createElement("section", {
+  }, "No giveaways have been written for this evening yet.")), halls.length > 0 && React.createElement("section", {
     className: "sec",
     id: "fs-company"
-  }, sk('In company with', halls.length ? halls.length + ' partnered' : ''), halls.length ? React.createElement("div", {
+  }, sk('In company with', halls.length + ' partnered'), halls.length ? React.createElement("div", {
     className: "cards"
   }, halls.map((p, i) => React.createElement(PartnerCard, {
     p: p,
@@ -1413,10 +1410,7 @@ function Profile({
     } : undefined
   }, React.createElement("span", {
     className: "fileno"
-  }, "File No. ", no, " \xB7 ", tierName), React.createElement("span", {
-    className: "vline",
-    "aria-hidden": "true"
-  }), React.createElement(Bot, {
+  }, "File No. ", no, " \xB7 ", tierName), React.createElement(Bot, {
     k: "sprig",
     className: "sprig"
   }), React.createElement("span", {
@@ -1475,7 +1469,7 @@ function Profile({
     href: 'https://' + m.carrd.replace(/^https?:\/\//, ''),
     target: "_blank",
     rel: "noopener"
-  }, "\u2740 carrd \u2197"), m.disc && React.createElement("button", {
+  }, "\u2740 carrd"), m.disc && React.createElement("button", {
     type: "button",
     onClick: () => copyText(m.disc, toast),
     title: "Copy the Discord handle"
